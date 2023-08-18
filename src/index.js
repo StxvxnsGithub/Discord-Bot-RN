@@ -54,11 +54,11 @@ client.on("interactionCreate", async (interaction) => {
                 channel
                     .send({ embeds: [embed] })
                     .then(() => {
-                        interaction.reply(
-                            `Embed sent successfully to #${channel.name}.`
-                        );
                         console.log(
                             `Embed Command: message sent successfully.`
+                        );
+                        interaction.reply(
+                            `Embed sent successfully to #${channel.name}.`
                         );
                     })
                     .catch((error) => {

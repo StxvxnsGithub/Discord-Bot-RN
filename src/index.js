@@ -1,5 +1,5 @@
 require("dotenv").config(); // Loads .env, which stores confidential data
-const { Client, IntentsBitField } = require("discord.js"); // Imports relevant classes from discord.js library by destructuring
+const { Client, IntentsBitField, EmbedBuilder } = require("discord.js"); // Imports relevant classes from discord.js library by destructuring
 
 const client = new Client({
     intents: [
@@ -11,7 +11,75 @@ const client = new Client({
 });
 
 client.on("ready", (c) => {
-    console.log(`${c.user.tag} is online`);
+    console.log(`${c.user.tag} is ONLINE.`);
+});
+
+client.on("interactionCreate", async (interaction) => {
+    if (interaction.isChatInputCommand()) {
+        console.log(`COMMAND RECEIVED: ${interaction.commandName}.`);
+
+        if (interaction.commandName === "embed") {
+            // try {
+            const embed = new EmbedBuilder()
+                .setTitle("Ignore Me")
+                .setDescription("Fed is testing stuff")
+                .setColor(0x000843)
+                .addFields(
+                    {
+                        name: "Field title",
+                        value: "Sample text",
+                        inline: true,
+                    },
+                    {
+                        name: "Field title",
+                        value: "Sample text",
+                        inline: true,
+                    },
+                    {
+                        name: "Field title",
+                        value: "Sample text",
+                        inline: true,
+                    }
+                );
+
+            // interaction.reply({ embeds: [embed] });
+
+            const channelID = BigInt(
+                interaction.options.get("channel-id")?.value
+            );
+
+            try {
+                const channel = await client.channels.fetch(channelID);
+
+                channel
+                    .send({ embeds: [embed] })
+                    .then(() => {
+                        interaction.reply(
+                            `Embed sent successfully to #${channel.name}.`
+                        );
+                        console.log(
+                            `Embed Command: message sent successfully.`
+                        );
+                    })
+                    .catch((error) => {
+                        console.error(
+                            `Embed Command Error: message send fail. \n${error}`
+                        );
+                    });
+            } catch (error) {
+                console.log(
+                    `Embed Command Error: channel '${channelID}' not found. \n${error}`
+                );
+            }
+        }
+
+        if (interaction.commandName === "add") {
+            const num1 = interaction.options.get("first-number")?.value;
+            const num2 = interaction.options.get("second-number")?.value;
+
+            interaction.reply(`The sum is ${num1 + num2}`);
+        }
+    }
 });
 
 // client.on("messageCreate", (message) => {

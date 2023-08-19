@@ -1,5 +1,6 @@
 require("dotenv").config(); // Loads .env, which stores confidential data
 const { Client, IntentsBitField, EmbedBuilder } = require("discord.js"); // Imports relevant classes from discord.js library by destructuring
+const eventHandler = require("./handlers/eventHandler");
 
 const client = new Client({
     intents: [
@@ -10,77 +11,78 @@ const client = new Client({
     ],
 });
 
-client.on("ready", (c) => {
-    console.log(`${c.user.tag} is ONLINE.`);
-});
+eventHandler(client);
 
-client.on("interactionCreate", async (interaction) => {
-    if (interaction.isChatInputCommand()) {
-        console.log(`COMMAND RECEIVED: ${interaction.commandName}.`);
+// client.on("ready", (c) => {
+//     console.log(`${c.user.tag} is ONLINE.`);
+// });
 
-        if (interaction.commandName === "embed") {
-            // try {
-            const embed = new EmbedBuilder()
-                .setTitle("Ignore Me")
-                .setDescription("Fed is testing stuff")
-                .setColor(0x000843)
-                .addFields(
-                    {
-                        name: "Field title",
-                        value: "Sample text",
-                        inline: true,
-                    },
-                    {
-                        name: "Field title",
-                        value: "Sample text",
-                        inline: true,
-                    },
-                    {
-                        name: "Field title",
-                        value: "Sample text",
-                        inline: true,
-                    }
-                );
+// client.on("interactionCreate", async (interaction) => {
+//     if (interaction.isChatInputCommand()) {
+//         console.log(`COMMAND RECEIVED: ${interaction.commandName}.`);
 
-            // interaction.reply({ embeds: [embed] });
+//         if (interaction.commandName === "embed") {
+//             const embed = new EmbedBuilder()
+//                 .setTitle("Ignore Me")
+//                 .setDescription("Fed is testing stuff")
+//                 .setColor(0x000843)
+//                 .addFields(
+//                     {
+//                         name: "Field title",
+//                         value: "Sample text",
+//                         inline: true,
+//                     },
+//                     {
+//                         name: "Field title",
+//                         value: "Sample text",
+//                         inline: true,
+//                     },
+//                     {
+//                         name: "Field title",
+//                         value: "Sample text",
+//                         inline: true,
+//                     }
+//                 );
 
-            const channelID = BigInt(
-                interaction.options.get("channel-id")?.value
-            );
+//             // interaction.reply({ embeds: [embed] });
 
-            try {
-                const channel = await client.channels.fetch(channelID);
+//             const channelID = BigInt(
+//                 interaction.options.get("channel-id")?.value
+//             );
 
-                channel
-                    .send({ embeds: [embed] })
-                    .then(() => {
-                        console.log(
-                            `Embed Command: message sent successfully.`
-                        );
-                        interaction.reply(
-                            `Embed sent successfully to #${channel.name}.`
-                        );
-                    })
-                    .catch((error) => {
-                        console.error(
-                            `Embed Command Error: message send fail. \n${error}`
-                        );
-                    });
-            } catch (error) {
-                console.log(
-                    `Embed Command Error: channel '${channelID}' not found. \n${error}`
-                );
-            }
-        }
+//             try {
+//                 const channel = await client.channels.fetch(channelID);
 
-        if (interaction.commandName === "add") {
-            const num1 = interaction.options.get("first-number")?.value;
-            const num2 = interaction.options.get("second-number")?.value;
+//                 channel
+//                     .send({ embeds: [embed] })
+//                     .then(() => {
+//                         console.log(
+//                             `Embed Command: message sent successfully.`
+//                         );
+//                         interaction.reply(
+//                             `Embed sent successfully to #${channel.name}.`
+//                         );
+//                     })
+//                     .catch((error) => {
+//                         console.error(
+//                             `Embed Command Error: message send fail. \n${error}`
+//                         );
+//                     });
+//             } catch (error) {
+//                 console.log(
+//                     `Embed Command Error: channel '${channelID}' not found. \n${error}`
+//                 );
+//             }
+//         }
 
-            interaction.reply(`The sum is ${num1 + num2}`);
-        }
-    }
-});
+//         if (interaction.commandName === "add") {
+//             const num1 = interaction.options.get("first-number")?.value;
+//             const num2 = interaction.options.get("second-number")?.value;
+
+//             interaction.reply(`The sum is ${num1 + num2}`);
+//         }
+//     }
+// });
 
 // client.on("messageCreate", (message) => {
 //     if (!message.author.bot) {

@@ -11,6 +11,6 @@ const client = new Client({
     ],
 });
 
-eventHandler(client);
+eventHandler(client); // Executes eventHandler method
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN); // Logs into bot with confidential token
